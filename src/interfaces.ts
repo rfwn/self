@@ -33,6 +33,4 @@ export interface ICommandArgument {
 	value?: string;
 }
 
-export interface IDiscordProfile {
-	
-}
+export interface IDiscordProfile {}

@@ -19,7 +19,8 @@ export default class PurgeCommand extends Command {
 				{
 					name: 'time',
 					short: 't',
-					description: 'message time period (like 1m will delete messages sent within the past minute)',
+					description:
+						'message time period (like 1m will delete messages sent within the past minute)',
 					type: 'string'
 				},
 				{
@@ -44,19 +45,28 @@ export default class PurgeCommand extends Command {
 		args: ICommandArgument[],
 		flags: ICommandFlag[]
 	): Promise<any> {
-		const limit = flags.find((flag) => flag.name === 'limit')?.value || Infinity;
+		const limit =
+			flags.find((flag) => flag.name === 'limit')?.value || Infinity;
 		const guildFlag = flags.find((flag) => flag.name === 'guild')?.value;
-		const channelFlag = flags.find((flag) => flag.name === 'channel')?.value;
-		const guild = guildFlag ? await this.client.guilds.fetch(String(guildFlag)) : message.guild;
-		let channel = channelFlag ? (guild ? await guild.channels.fetch(String(channelFlag)) : message.channel) as TextChannel : message.channel as TextChannel;
-		const itime = flags.find((flag) => flag.name === 'time')?.value || undefined;
+		const channelFlag = flags.find(
+			(flag) => flag.name === 'channel'
+		)?.value;
+		const guild = guildFlag
+			? await this.client.guilds.fetch(String(guildFlag))
+			: message.guild;
+		let channel = channelFlag
+			? ((guild
+					? await guild.channels.fetch(String(channelFlag))
+					: message.channel) as TextChannel)
+			: (message.channel as TextChannel);
+		const itime =
+			flags.find((flag) => flag.name === 'time')?.value || undefined;
 		let messagesLeft = Number(limit);
 		let deletedMessages = 0;
 		let timeLimit: number | undefined;
 		if (itime) {
 			const { error, success: time } = this.getTotalTime(String(itime));
-			if (error)
-				return message.reply({ content: error });
+			if (error) return message.reply({ content: error });
 			timeLimit = time;
 		}
 
@@ -107,7 +117,9 @@ export default class PurgeCommand extends Command {
 			};
 		}
 		if (isNaN(Number(timeFormat.slice(0, -1))))
-			return { error: 'an invalid number was entered. (example: 1m or 16h)' };
+			return {
+				error: 'an invalid number was entered. (example: 1m or 16h)'
+			};
 
 		const time: number = require('ms')(timeFormat);
 
@@ -115,5 +127,4 @@ export default class PurgeCommand extends Command {
 
 		return { success: time };
 	};
-
 }
