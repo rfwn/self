@@ -35,7 +35,8 @@ export default class Command {
 		throw new Error("Method 'run' must be implemented.");
 	}
 
-	public async timedDelete(message: Message, delay: number = 5000) {
+	public async timedDelete(messagePromise: Promise<Message>, delay: number = 5000) {
+		const message = await messagePromise;
 		setTimeout(() => {
 			message.delete().catch(console.error);
 		}, delay);
