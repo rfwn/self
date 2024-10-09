@@ -3,6 +3,7 @@ import Database from './db';
 import { Event } from './event';
 import CommandRegistry, { EventRegistry } from './registry';
 import Command from './command';
+import { Config } from './interfaces';
 export default class Self extends Client {
 	public readonly events: Map<string, Event>;
 	public readonly commands: Map<string, Command>;
@@ -13,7 +14,7 @@ export default class Self extends Client {
 		});
 		this.events = new Map();
 		this.commands = new Map();
-		this.database = new Database<any>('../.data.json');
+		this.database = new Database<Config>('../.data.json');
 		new EventRegistry(this).loadEvents();
 		new CommandRegistry(this).loadCommands();
 	}
