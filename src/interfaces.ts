@@ -1,7 +1,8 @@
-import { PresenceStatusData } from 'discord.js-selfbot-v13';
+import  { PresenceStatusData } from 'discord.js-selfbot-v13';
 
-export interface IPrimaryConfig {
+export interface Config {
 	status: PresenceStatusData;
+	webHookUrl: string;
 }
 
 export interface IParsedCommand {
@@ -32,5 +33,3 @@ export interface ICommandArgument {
 	description: string;
 	value?: string;
 }
-
-export interface IDiscordProfile {}
