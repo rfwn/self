@@ -35,6 +35,12 @@ export default class Command {
 		throw new Error("Method 'run' must be implemented.");
 	}
 
+	public async timedDelete(message: Message, delay: number = 5000) {
+		setTimeout(() => {
+			message.delete().catch(console.error);
+		}, delay);
+	}
+
 	public getHelp(): string {
 		let helpMessage = `Command: ${this.name}\n${this.options.description || ''}\n\n`;
 
@@ -86,10 +92,14 @@ export default class Command {
 		return true;
 	}
 
+	public async triggerHelp(message: Message): Promise<Message<boolean>> {
+		return await message.reply('```\n' + this.getHelp() + '\n```');
+	}
+
 	public handleHelpFlag(message: Message, flags: ICommandFlag[]): boolean {
 		const helpFlag = flags.find((flag) => flag.name === 'help');
 		if (helpFlag) {
-			message.reply('```\n' + this.getHelp() + '\n```');
+			this.triggerHelp(message);
 			return true;
 		}
 		return false;
