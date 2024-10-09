@@ -2,6 +2,7 @@
 
 todo
 
+- [ ] config interface
 - [ ] purge command error handling
 - [ ] purge command deleting non-self messages
 - [ ] logging channel (webhook)
