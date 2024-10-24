@@ -81,11 +81,6 @@ export default class PurgeCommand extends Command {
 						(m: Message) =>
 							Date.now() - m.createdTimestamp <= timeLimit
 					);
-				// messages.filter(
-				// 	(m: Message) =>
-				// 		m.createdTimestamp >
-				// 		Date.now() - 14 * 24 * 60 * 60 * 1000
-				// );
 				messages = messages.filter(
 					(m: Message) => m.author.id == message.author.id
 				);
@@ -99,6 +94,7 @@ export default class PurgeCommand extends Command {
 					deletedMessages++;
 				}
 			}
+			this.timedDelete(message.channel.send(`deleted **${deletedMessages}** messages`))
 		} else {
 			return message.reply({
 				content: 'the specified channel is not a text channel'
