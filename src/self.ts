@@ -7,6 +7,7 @@ import { Config } from './interfaces';
 export default class Self extends Client {
 	public readonly events: Map<string, Event>;
 	public readonly commands: Map<string, Command>;
+	public intervals: Map<string, NodeJS.Timeout>;
 	public database: Database<any>;
 	constructor() {
 		super({
