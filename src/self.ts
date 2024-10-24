@@ -16,6 +16,7 @@ export default class Self extends Client {
 		this.events = new Map();
 		this.commands = new Map();
 		this.database = new Database<Config>('../.data.json');
+		this.intervals = new Map();
 		new EventRegistry(this).loadEvents();
 		new CommandRegistry(this).loadCommands();
 	}
