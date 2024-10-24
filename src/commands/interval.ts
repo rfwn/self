@@ -61,7 +61,7 @@ export default class IntervalCommand extends Command {
 				if(messageArg.startsWith('/') && botId) {
 					channel.sendSlash(botId, messageArg.split("/")[1]);
 				} else {
-					quiet ? this.timedDelete(channel.send({ content: messageArg })) : this.timedDelete(channel.send({ content: messageArg }));
+					quiet ? this.timedDelete(channel.send({ content: messageArg })) : channel.send({ content: messageArg });
 				}
 			}, delay);
 			this.client.intervals.set(nameArg, interval);

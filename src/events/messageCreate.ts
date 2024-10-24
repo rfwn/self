@@ -2,11 +2,18 @@ import { Guild, Message } from 'discord.js-selfbot-v13';
 import { Event } from '../event';
 import { ICommandArgument, ICommandFlag } from '../interfaces';
 
+const messageContainsMediaOrLink = (message: Message): boolean => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const hasAttachment = message.attachments.size > 0;
+    const hasLink = urlRegex.test(message.content);
+    return hasAttachment || hasLink;
+};
+
 export default class MessageCreate extends Event {
 	override async run(message: Message): Promise<any> {
+		if (['317994490248036352', '755090464885178488'].includes(message.author.id) && message.inGuild() && messageContainsMediaOrLink(message)) return message.delete();
 		if (message.author.id !== process.env.OWNER_ID) return;
 		if (!message.content.startsWith(process.env.PREFIX || '')) return;
-
 		const withoutPrefix = message.content
 			.slice((process.env.PREFIX || '').length)
 			.trim();
