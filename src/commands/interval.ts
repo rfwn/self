@@ -31,6 +31,12 @@ export default class IntervalCommand extends Command {
 					short: "q",
 					type: "boolean",
 					description: "Delete sent messages after seconds"
+				},
+				{
+					name: "botId",
+					short: "b",
+					type: "string",
+					description: "bot id (if your message is a slash command)"
 				}
 			]
 		};
@@ -46,12 +52,17 @@ export default class IntervalCommand extends Command {
 		const messageArg = args.find((arg) => arg.name === 'message')?.value!;
 		const delayArg = args.find((arg) => arg.name === 'delay')?.value!;
 		const quiet = flags.find((flag) => flag.name === 'quiet')?.value as boolean;
+		const botId = flags.find((flag) => flag.name === 'botId')?.value as string | undefined;
 		const { error, success: delay } = this.getTotalTime(String(delayArg));
 		if (error) return message.reply({ content: error });
 		let channel = (message.channel as TextChannel);
 		if (channel.isText()) {
 			const interval = setInterval(() => {
-				quiet ? this.timedDelete(channel.send({ content: messageArg })) : this.timedDelete(channel.send({ content: messageArg }));
+				if(messageArg.startsWith('/') && botId) {
+					channel.sendSlash(botId, messageArg.split("/")[1]);
+				} else {
+					quiet ? this.timedDelete(channel.send({ content: messageArg })) : this.timedDelete(channel.send({ content: messageArg }));
+				}
 			}, delay);
 			this.client.intervals.set(nameArg, interval);
 		}
